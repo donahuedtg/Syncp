@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -8,12 +9,12 @@ namespace SyncpWallet.Services
     public class DatabaseConnector : IDisposable
     {
         private const int DefaultDatabaseTimeout = 30;
-        private string _connectionString;
+        private string connectionString;
         public SqlConnection Connection { get; private set; }
 
         public DatabaseConnector()
         {
-            _connectionString = System.Configuration.ConfigurationManager.AppSettings["DefaultConnection"];
+            connectionString = ConfigurationManager.AppSettings["DefaultConnection"];
             Connection = GetConnection();
         }
 
@@ -64,7 +65,7 @@ namespace SyncpWallet.Services
 
         private SqlConnection GetConnection()
         {
-            var conn = new SqlConnection(_connectionString);
+            var conn = new SqlConnection(connectionString);
             conn.Open();
 
             return conn;
